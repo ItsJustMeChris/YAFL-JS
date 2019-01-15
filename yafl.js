@@ -1,6 +1,4 @@
 (function () {
-
-
     let forms = Array.from(document.getElementsByClassName('yafl'));
 
     let formSteps = forms.map(e => Array.from(e.getElementsByClassName('yafl-step')));
@@ -16,22 +14,38 @@
             let conditionalTargets = document.getElementsByName(c.dataset.target);
             conditionalTargets.forEach((t) => {
                 t.addEventListener('input', (e) => {
+                    if (c.dataset.regex != undefined) {
+                        let reg = new RegExp(c.dataset.regex);
+                        if (e.target.value.match(reg)) {
+                            return showHide(c, true)
+                        } else {
+                            return showHide(c, false)
+                        }
+                    }
                     if (e.target.value == c.dataset.value) {
-                        if (c.dataset.action == "show") {
-                            c.style.display = "";
-                        } else if (c.dataset.action == "hide") {
-                            c.style.display = "none";
-                        }
+                        return showHide(c, true)
                     } else {
-                        if (c.dataset.action == "show") {
-                            c.style.display = "none";
-                        } else if (c.dataset.action == "hide") {
-                            c.style.display = "";
-                        }
+                        return showHide(c, false)
                     }
                 });
             });
         });
+    }
+
+    function showHide(e, bool) {
+        if (bool) {
+            if (e.dataset.action == "show") {
+                e.style.display = "";
+            } else if (e.dataset.action == "hide") {
+                e.style.display = "none";
+            }
+        } else {
+            if (e.dataset.action == "show") {
+                e.style.display = "none";
+            } else if (e.dataset.action == "hide") {
+                e.style.display = "";
+            }
+        }
     }
 
     function setupForms() {
